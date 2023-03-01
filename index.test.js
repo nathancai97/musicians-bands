@@ -58,4 +58,31 @@ describe("Band and Musician Models", () => {
     expect(updatedMusician.name).toBe("Still Nathan");
     expect(updatedMusician.instrumentProperties).toBe("Alto Saxophone");
   });
+
+  test("bands and can have many musicians", async () => {
+    let band = await Band.create({
+      name: "Fall Out Boys",
+      genre: "Rock",
+      showCount: 5,
+    });
+    let nathan = await Musician.create({
+      name: "Nathan",
+      instrumentProperties: "Saxophone",
+    });
+    let sonam = await Musician.create({
+      name: "Sonam",
+      instrumentProperties: "Guitar",
+    });
+    await band.addMusician(nathan);
+    await band.addMusician(sonam);
+    const bandMusicians = await band.getMusicians();
+    console.log(bandMusicians);
+    expect(bandMusicians.length).toBe(2);
+    expect(bandMusicians[0] instanceof Musician).toBeTruthy;
+    expect(bandMusicians[0].name).toBe("Nathan");
+    expect(bandMusicians[0].instrumentProperties).toBe("Saxophone");
+    expect(bandMusicians[1] instanceof Musician).toBeTruthy;
+    expect(bandMusicians[1].name).toBe("Sonam");
+    expect(bandMusicians[1].instrumentProperties).toBe("Guitar");
+  });
 });

@@ -151,16 +151,48 @@ describe("Band and Musician Models", () => {
   });
 
   test("Eager loading", async () => {
-    bandsList = await Band.findAll({
-        include: [
-            {model: Musician, as: "musicians"}
-        ]
-    })
+    await sequelize.sync({ force: true });
 
-    bandsSongList = await Band.findAll({
-        include: [
-            {model: Song, as: "songs"}
-        ]
-    })
-})
+    // bands
+    let fallOutBoys = await Band.create({
+      name: "Fall Out Boys",
+      genre: "Rock",
+      showCount: 101,
+    });
+
+    // songs
+    let rockSong = await Song.create({
+      title: "Thnks fr t Mmrs",
+      year: 2007,
+    });
+    let edmSong = await Song.create({
+      title: "First Time",
+      year: 2018,
+    });
+
+    // musicians
+    let nathan = await Musician.create({
+      name: "Nathan",
+      instrumentProperties: "Saxophone",
+    });
+    let sonam = await Musician.create({
+      name: "Sonam",
+      instrumentProperties: "Guitar",
+    });
+
+    await fallOutBoys.addMusician([nathan, sonam]);
+    await fallOutBoys.addSongs([rockSong, edmSong]);
+
+    const band = await Band.findAll({
+      include: [
+        { model: Musician, as: "musicians" },
+        { model: Song, as: "songs" },
+      ],
+    });
+
+    expect(band[0].musicians.length).toBe(2);
+
+    // eater loading for songs
+    expect(band[0].songs.length).toBe(2);
+  });
 });

@@ -19,7 +19,7 @@ describe("Band and Musician Models", () => {
       genre: "Rock",
       showCount: 100,
     });
-    
+
     expect(testBand.name).toBe("Fall Out Boys");
     expect(testBand.genre).toBe("Rock");
     expect(testBand.showCount).toBe(100);
@@ -149,4 +149,18 @@ describe("Band and Musician Models", () => {
     expect(edmSongs.length).toBe(2);
     expect(edmSongs[1]).toHaveProperty("genre", "EDM");
   });
+
+  test("Eager loading", async () => {
+    bandsList = await Band.findAll({
+        include: [
+            {model: Musician, as: "musicians"}
+        ]
+    })
+
+    bandsSongList = await Band.findAll({
+        include: [
+            {model: Song, as: "songs"}
+        ]
+    })
+})
 });

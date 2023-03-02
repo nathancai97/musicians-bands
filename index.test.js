@@ -87,10 +87,10 @@ describe("Band and Musician Models", () => {
 
     const bandMusicians = await band.getMusicians();
     expect(bandMusicians.length).toBe(2);
-    expect(bandMusicians[0] instanceof Musician).toBeTruthy;
+    expect(bandMusicians[0] instanceof Musician).toBeTruthy();
     expect(bandMusicians[0].name).toBe("Nathan");
     expect(bandMusicians[0].instrumentProperties).toBe("Saxophone");
-    expect(bandMusicians[1] instanceof Musician).toBeTruthy;
+    expect(bandMusicians[1] instanceof Musician).toBeTruthy();
     expect(bandMusicians[1].name).toBe("Sonam");
     expect(bandMusicians[1].instrumentProperties).toBe("Guitar");
   });
